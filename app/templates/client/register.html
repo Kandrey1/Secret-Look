@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="h1__form">Регистрация пользователя</h1>
+    <div class="form__register__block">
+        <div class="form__flash__message__error">
+            {% for msg in get_flashed_messages() %}
+                <span>{{ msg }}</span>
+            {% endfor %}
+        </div>
+        <form class="form__register" action="" method="post">
+
+            {{ form.csrf_token() }}
+
+            {% for field in form if field.name != "csrf_token" %}
+
+                {% if field.name != "submit" %}
+                    {{ field.label }}
+                {% else %}
+                    </br>
+                    </br>
+                {% endif %}
+
+                <p>{{ field }}
+                {% for error in field.errors %}
+                    <span class="form__error__label">{{ error }}</span>
+                {% endfor %}
+                </p>
+            {% endfor %}
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,162 @@
+/*Обнуление*/
+*{padding: 0;margin: 0;}
+*,*:before,*:after{-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+nav,footer,header,aside{display: block;}
+html,body{height:100%;width:100%;font-size:100%;line-height:1;font-size:14px;-ms-text-size-adjust:100%;-moz-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+input,button,textarea{font-family:inherit;}
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner {padding:0;border:0;}
+a,a:visited{text-decoration: none;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
+/*--------------------------- Page error start -------------------------------*/
+.h1__page__error {
+    font-size: 20px;
+    margin: 20px 0px 0px 20px;
+}
+/*--------------------------- Pages error ens --------------------------------*/
+/*+++++++++++++++++++++++++++++++++++++++++++++++*/
+.body{
+	color: #444;
+}
+.wrapper {
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+/*+++++++++++++++++++++++++++++++++++++++++++++++*/
+/*--------------------- HEADER start -----------------------------------------*/
+.header {
+}
+.header__container {
+    background-color: #DCDCDC;
+    display: flex;
+    min-height: 80px;
+    align-items: center;
+    max-width: 900px;
+    padding: 0px 15px;
+    margin: 0px auto;
+}
+/*---------------------------------------------------*/
+.header__logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: red;
+}
+/*---------------------------------------------------*/
+.header__menu{
+    margin: 0px 0px 0px 20px;
+}
+.menu__list {
+    display: flex;
+}
+.menu__item:not(:last-child) {
+    margin: 0px 20px 0px 0px;
+}
+.menu__link {
+    margin: 0px 20px 0px 0px;
+    color: #000;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 34px;
+}
+/*---------------------------------------------------*/
+.enter {
+    margin: 0px 0px 0px 200px;
+}
+.enter__list {
+    display: flex;
+}
+.enter__item {
+}
+.enter__link {
+    color: grey;
+    font-size: 16px;
+    font-weight: 400;
+}
+/*--------------------- HEADER end -------------------------------------------*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*-----------------------MAIN start ------------------------------------------*/
+.main__container {
+    height: 100%;
+    background-color: #DCDCDC;
+    max-width: 900px;
+    padding: 0px 15px;
+    margin: 0px auto;
+    overflow:auto;  /* скрол "внутри" */
+}
+/*-----------------------MAIN end --------------------------------------------*/
+/*-----------------------FORMs start -----------------------------------------*/
+.h1__form{
+    margin: 0px 0px 10px 0px;
+    font-size: 24px;
+}
+/*-----------------------Message Error ------------*/
+.form__flash__message__error {
+    margin: 10px 10px 10px 10px;
+    color: red;
+    font-size: 14px;
+}
+.form__error__label {
+    color: #FF4500;
+    font-size: 14px;
+}
+/*-----------------------Register -----------------*/
+
+/*-----------------------Auth ---------------------*/
+
+/*-----------------------FORMs end -------------------------------------------*/
+/*-----------------------Profile start ---------------------------------------*/
+.h1__profile {
+    margin: 0px 0px 10px 0px;
+    font-size: 24px;
+}
+.profile__flash__message__error {
+    margin: 10px 10px 10px 10px;
+    color: red;
+    font-size: 14px;
+}
+/*------------------------------------------------*/
+.profile__menu {
+    margin: 20px 0px 30px 0px;
+}
+.profile__menu__list {
+    display: flex;
+}
+.profile__menu__item:not(:last-child) {
+    margin: 0px 60px 0px 0px;
+}
+.profile__menu__item {
+}
+.profile__menu__link {
+    color: #800080;
+    font-size: 26px;
+    font-weight: 400;
+}
+/*------------------------------------------------*/
+.h2__profile {
+    margin: 0px 0px 10px 0px;
+    font-size: 20px;
+}
+.h3__profile {
+    margin: 0px 0px 10px 10px;
+    font-size: 18px;
+}
+.profile__p {
+    margin: 0px 0px 10px 30px;
+    font-size: 16px;
+}
+.profile__content__vote {
+    margin: 0px 0px 20px 0px;
+}
+.profile__content__vote__item {
+    margin: 0px 0px 10px 50px;
+    font-size: 16px;
+}
+/*-----------------------Profile end -----------------------------------------*/

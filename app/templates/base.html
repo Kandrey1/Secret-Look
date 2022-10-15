@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ context.title }}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link type="text/css" href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="body">
+    <div class="wrapper">
+        <header class="header">
+            <div class="header__container">
+                    <a href="{{  url_for('index') }}" class="header__logo"><img src="{{ url_for('static', filename='logo.png') }}"></a>
+                    <nav class="header__menu">
+                        <ul class="menu__list">
+                            <li class="menu__item">
+                                <a href="{{ url_for('index') }}" class="menu__link">Главная</a>
+                            </li>
+                            <div class="enter">
+                                {% if session.user_login %}
+                                    <ul class="enter__list">
+                                        <li class="enter__item"><a href="{{ url_for('client.profile') }}" class="enter__link">Личный кабинет |</a></li>
+                                        <li class="enter__item"><a href="{{ url_for('client.logout') }}" class="enter__link">| Выйти</a></li>
+                                    </ul>
+                                    </br>
+                                    Вы вошли как: {{ session.user_login }}
+                                {% else %}
+                                    <ul class="enter__list">
+                                        <li class="enter__item"><a href="{{  url_for('client.register') }}" class="enter__link">Регистрация |</a></li>
+                                        <li class="enter__item"><a href="{{  url_for('client.auth') }}" class="enter__link">| Войти</a></li>
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </ul>
+                    </nav>
+            </div>
+        </header>
+        <main class="main__container">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+    </div>
+</body>
+</html>

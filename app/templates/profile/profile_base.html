@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="h1__profile">Личный кабинет</h1>
+
+    <div class="profile__menu">
+        <ul class="profile__menu__list">
+            <li class="profile__menu__item"><a href="" class="profile__menu__link">Ваши опросы</a></li>
+        </ul>
+    </div>
+
+    <div class="profile__block">
+        <div class="profile__flash__message__error">
+            {% for msg in get_flashed_messages() %}
+                <span>{{ msg }}</span>
+            {% endfor %}
+        </div>
+        <div class="profile__content">
+            {% block profile_content %}
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}
