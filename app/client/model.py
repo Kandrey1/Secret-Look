@@ -1,6 +1,7 @@
 import datetime
 from flask_jwt_extended import create_access_token
 from passlib.hash import bcrypt
+from sqlalchemy.orm import relationship
 
 from ..models import db, ma
 
@@ -27,6 +28,9 @@ class Client(db.Model):
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(350), nullable=False)
     # todo возможно добавить IP с которого идет регистрация аккаунта
+
+    rs_vote = relationship("Vote", uselist=True, backref="votes",
+                           cascade='save-update, merge, delete')
 
     def __init__(self, login, email, password):
         self.login = login

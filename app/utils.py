@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy.exc import IntegrityError
 
 from .client.model import Client
@@ -66,6 +68,8 @@ class Database:
                 if val:
                     if key == 'password':
                         setattr(row, key, Client.get_hash_pass(val))
+                    elif key in ['date_start', 'date_end']:
+                        setattr(row, key, Converter.str_in_datetime(val))
                     else:
                         setattr(row, key, val)
 
@@ -74,3 +78,26 @@ class Database:
         except Exception as ex:
             db.session.rollback()
             raise Exception(f"Ошибка при обновлении записи в БД {ex}")
+
+
+class Converter:
+    """Содержит методы преобразования данных.
+        str_in_datetime() -- Преобразует строку в datetime.
+        datetime_in_str() -- Преобразует datetime в строку.
+    """
+    __FORMAT_DATE = '%Y-%m-%dT%H:%M'
+
+    @staticmethod
+    def str_in_datetime(date_time_str: str) -> datetime:
+        """Преобразует дату date_time_str в формате строки в объект datetime.
+           Дата в формате строки '%Y-%m-%dT%H:%M' (прим. '2018-06-29T08:15')
+        """
+        return datetime.datetime.strptime(date_time_str,
+                                          Converter.__FORMAT_DATE)
+
+    @staticmethod
+    def datetime_in_str(date_time_obj: datetime) -> str:
+        """Преобразует date_time_obj объект datetime в строку.
+           Формат строки '%Y-%m-%dT%H:%M' (прим. '2018-06-29T08:15')
+        """
+        return date_time_obj.strftime(Converter.__FORMAT_DATE)
