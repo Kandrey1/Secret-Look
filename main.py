@@ -3,16 +3,20 @@ from flask import render_template
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.exceptions import NoAuthorizationError
 
+
 from app import create_app
 from app.client.blueprint import client_bp
 from app.models import db
-
+from app.vote.blueprint import vote_bp
+from cache import cache
 
 load_dotenv('.env')
 
 app = create_app()
 
 jwt = JWTManager(app)
+
+cache.init_app(app)
 
 
 @app.before_first_request
@@ -21,6 +25,7 @@ def create_table():
 
 
 app.register_blueprint(client_bp, url_prefix='/client')
+app.register_blueprint(vote_bp, url_prefix='/vote')
 
 
 @app.route("/")

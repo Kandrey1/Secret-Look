@@ -1,0 +1,74 @@
+{% extends "profile/profile.html" %}
+
+{% block profile_content %}
+
+    <form class="form__vote__main__create" action="" method="post">
+        <div>
+            <button class="button__create__vote" value="" name="create__vote">Создать опрос</button>
+        </div>
+    </form>
+
+    <form class="form__vote__main" action="" method="post">
+        <h1 class="h1__vote__main">На данный момент у Вас:</h1>
+
+        <h2 class="h2__vote__main">Активные опросы:</h2>
+        <div class="vote__main__started">
+            <ol>
+                {% if context.started_votes%}
+                    <div>
+                        <ol>
+                            {% for vote in context.started_votes %}
+                               <li class="vote__main__item">
+                                    <span>{{ vote.title }}</span>
+                                    <button class="button__vote__statistic" value="{{ vote.id }}" name="show__statistic">Статистика</button>
+                               </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                {% else %}
+                    <p>На данный момент нет активных опросов.</p>
+                {% endif%}
+            </ol>
+        </div>
+
+        <h2 class="h2__vote__main">Ожидающие запуска опросы:</h2>
+        <div class="vote__main__waiting">
+            <ol>
+                {% if context.waiting_votes%}
+                    <div>
+                        <ol>
+                            {% for vote in context.waiting_votes %}
+                                <li class="vote__main__item">
+                                    <span>{{ vote.title }}</span>
+                                    <button class="button__vote__redact" value="{{ vote.id }}" name="redact__vote">Редактировать</button>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                {% else %}
+                    <p>Все опросы запущены.</p>
+                {% endif%}
+            </ol>
+        </div>
+
+        <h2 class="h2__vote__main">Завершенные опросы:</h2>
+        <div class="vote__main__finished">
+            <ol>
+                {% if context.finished_votes%}
+                    <div>
+                        <ol>
+                            {% for vote in context.finished_votes %}
+                                <li class="vote__main__item">
+                                    <span>{{ vote.title }}</span>
+                                    <button class="button__vote__statistic" value="{{ vote.id }}" name="show__statistic">Статистика</button>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                {% else %}
+                    <p>Нет завершенных опросов.</p>
+                {% endif%}
+            </ol>
+        </div>
+    </form>
+{% endblock %}

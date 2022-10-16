@@ -1,0 +1,57 @@
+{% extends "profile/profile.html" %}
+
+{% block profile_content %}
+
+    <h1 class="h1__form__vote">Создание нового опроса.</h1>
+    <div class="form__vote__block">
+
+        <form class="form__vote" action="" method="post">
+
+            <div class="form__vote__title">
+                <p>{{ form.title.label }}</p>
+                {% if context.temp_vote %} {{ form.title(value=context.temp_vote.title) }} {% else %} {{ form.title }} {% endif %}
+                <span class="form__error__label">{{ form.errors.title }}</span>
+            </div>
+            <div class="form__vote__question">
+                <p>{{ form.question.label }}</p>
+                {% if context.temp_vote %} {{ form.question(value=context.temp_vote.question) }} {% else %} {{ form.question }} {% endif %}
+                <span class="form__error__label">{{ form.errors.question }}</span>
+            </div>
+            <div class="form__vote__date__start">
+                <p>{{ form.date_start.label }}</p>
+                {% if context.temp_vote %} {{ form.date_start(value=context.temp_vote.date_start) }} {% else %} {{ form.date_start }} {% endif %}
+                <span class="form__error__label">{{ form.errors.date_start }}</span>
+            </div>
+            <div class="form__vote__date__end">
+                <p>{{ form.date_end.label }}</p>
+                {% if context.temp_vote %} {{ form.date_end(value=context.temp_vote.date_end) }} {% else %} {{ form.date_end }} {% endif %}
+                <span class="form__error__label">{{ form.errors.date_end }}</span>
+            </div>
+            <div class="form__vote__button__save">
+                {{ form.save_vote }}
+                <span class="form__error__label">{{ form.errors.save_vote }}</span>
+            </div>
+
+            <div class="form__vote__add__answer">
+                    <p>{{ form.answer.label }}</p>
+                    {{ form.answer(class="vote__add__answer__input") }}
+                    {{ form.add_answer }}
+             </div>
+
+            <div class="form__vote__output">
+                <ol>
+                    {% for answer in context.answers %}
+                        <div class="vote__output__item">
+                            <li class="answer__item">
+                                <span>{{ answer[1] }}</span>
+                                <button class="button__delete__answer" name="delete_answer" value="{{ answer[0] }}">Удалить</button>
+                            </li>
+                        </div>
+                    {% endfor %}
+                </ol>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}

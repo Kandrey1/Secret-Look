@@ -4,10 +4,10 @@
 
     <h2 class="h2__profile">Опросы:</h2>
 
-    <h3 class="h3__profile">Запущенные опросы: </h3>
+    <h3 class="h3__profile">Запущенные опросы: {{ context.stared_count }}</h3>
 
-    <h3 class="h3__profile">Ожидающие запуска опросы: </h3>
+    <h3 class="h3__profile">Ожидающие запуска опросы: {{ context.waiting_count }}</h3>
 
-    <h3 class="h3__profile">Завершенные опросы:</h3>
+    <h3 class="h3__profile">Завершенные опросы: {{ context.finished_count }}</h3>
 
 {% endblock %}

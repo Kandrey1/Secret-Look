@@ -6,6 +6,7 @@ from flask_jwt_extended import set_access_cookies, unset_jwt_cookies, \
 from .forms import RegisterForm, AuthForm
 from .model import Client
 from app.utils import Database
+from ..vote.utils import get_votes_count
 
 client_bp = Blueprint('client', __name__)
 
@@ -85,6 +86,13 @@ def profile():
     context['title'] = 'Личный кабинет'
     try:
         current_client = get_jwt_identity()
+
+        context['stared_count'] = get_votes_count(client_id=current_client,
+                                                  status='started')
+        context['waiting_count'] = get_votes_count(client_id=current_client,
+                                                   status='waiting')
+        context['finished_count'] = get_votes_count(client_id=current_client,
+                                                    status='finished')
 
     except Exception as e:
         flash(f'Error: <{e}>')

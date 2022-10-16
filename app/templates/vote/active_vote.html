@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="h1__active__vote">Вы можете проголосовать в следующих опросах:</h1>
+    <div class="active__vote__output">
+
+        {% if context.votes %}
+            <ul>
+                {% for vote in context.votes.items %}
+                    <li class="active__vote__output__item"><a href="{{ url_for('vote.show_vote', vote_url=vote.rs_show.vote_url) }}">{{ vote.title }}</a></li>
+                {% endfor %}
+            </ul>
+            <div class="pagination__vote">
+                {% if context.votes.has_prev %}<a href="{{ url_for('vote.active_vote', page = context.page - 1) }}"><{{ context.page - 1 }}</a>{% else %} 1 {% endif %}
+                {% if context.votes.has_prev and context.votes.has_next %}<a href="{{ url_for('vote.active_vote', page = context.page - 1) }}">... {{ context.page }}</a>{% endif %} ...
+                {% if context.votes.has_next %}<a href="{{ url_for('vote.active_vote', page = context.page + 1) }}">{{ context.page + 1 }} ></a> {% else %} {{ context.max_page }} {% endif %}
+                из {{ context.max_page }}
+            </div>
+        {% else %}
+            <p>На данный момент нет активных опросов.</p>
+        {% endif%}
+    </div>
+
+{% endblock %}

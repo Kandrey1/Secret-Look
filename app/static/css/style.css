@@ -160,3 +160,160 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
     font-size: 16px;
 }
 /*-----------------------Profile end -----------------------------------------*/
+/*-----------------------Vote start ------------------------------------------*/
+.form__vote__main__create {
+    margin: 0px 0px 0px 600px;
+}
+.h1__vote__main {
+    margin: 0px 0px 10px 0px;
+    font-size: 24px;
+}
+.h2__vote__main {
+    margin: 20px 0px 10px 0px;
+    font-size: 20px;
+}
+.form__vote__main {
+    margin: 0px 0px 0px 0px;
+}
+.vote__main__started {
+    margin: 0px 0px 0px 40px;
+}
+.button__vote__statistic {
+    margin: 0px 0px 0px 20px;
+}
+.vote__main__waiting {
+    margin: 0px 0px 0px 40px;
+}
+.vote__main__finished {
+    margin: 0px 0px 0px 40px;
+}
+.button__vote__redact {
+    margin: 0px 0px 0px 20px;
+}
+.vote__main__item {
+    margin: 0px 0px 10px 0px;
+    font-size: 18px;
+}
+/*---------------- form -------------*/
+.h1__form__vote {
+    margin: 0px 0px 10px 0px;
+    font-size: 24px;
+}
+.form__vote.div {
+    margin: 100px 100px 100px 100px;
+}
+.form__vote__button__delete {
+    margin: 30px 0px 0px 600px;
+}
+.form__vote__title {
+    margin: 0px 0px 10px 0px;
+}
+.form__vote__question {
+    margin: 0px 0px 0px 0px;
+}
+.form__vote__date__start {
+    margin: 20px 0px 10px 0px;
+}
+.form__vote__date__start {
+    margin: 20px 0px 10px 0px;
+}
+.form__vote__add__answer {
+    margin: 20px 0px 10px 10px;
+}
+.form__vote__output {
+    margin: 20px 0px 10px 10px;
+}
+.vote__output__item {
+    margin: 20px 0px 10px 0px;
+}
+.form__vote__button__save {
+    margin: 50px 0px 0px 600px;
+}
+/*---------------- statistic -------------*/
+.h1__vote_statistic {
+    margin: 0px 0px 30px 0px;
+    font-size: 24px;
+}
+.vote__statistic__header {
+    margin: 0px 0px 10px 0px;
+}
+.vote__statistic__p {
+    margin: 0px 0px 10px 10px;
+    font-size: 20px;
+}
+.vote__statistic__body {
+    margin: 30px 0px 10px 30px;
+}
+.vote__statistic__body__item {
+    margin: 0px 0px 20px 10px;
+    font-size: 18px
+}
+.form__finished__vote__button {
+    margin: 0px 0px 0px 600px;
+}
+.button__finished__vote {
+    background-color: #FFA500;
+    border: none;
+    color: white;
+    padding: 15px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+}
+.button__finished__vote:hover {
+    background-color:#FF0000;
+    color: white;
+}
+/*-----------------------Vote end  -------------------------------------------*/
+/*-----------------------Vote Active start -----------------------------------*/
+/*----------------- Pagination --*/
+.pagination__vote {
+    margin: 40px 0px 30px 0px;
+    text-align: center;
+    font-size: 20px;
+}
+/*----------------- Pagination --*/
+.h1__active__vote {
+    margin: 0px 0px 30px 0px;
+    font-size: 24px;
+}
+.active__vote__output {
+    margin: 0px 0px 20px 10px;
+    font-size: 18px
+}
+.active__vote__output__item {
+    margin: 20px 0px 10px 30px;
+    font-size: 20px;
+}
+/*-----------------------Vote Active end -------------------------------------*/
+/*-----------------------Vote Show start -------------------------------------*/
+.h1__show__vote {
+    margin: 50px 0px 30px 0px;
+    font-size: 24px;
+    text-align: center
+}
+.show__vote__output {
+    margin: 10px 0px 10px 0px;
+    font-size: 24px;
+    text-align: center
+}
+.show__vote__output__item {
+    margin: 30px 0px 10px 10px;
+}
+.case__answer__button {
+    margin: 100px 0px 0px 0px;
+    font-size: 24px;
+    text-align: center
+}
+.button__case__answer {
+    background-color: #FFA500;
+    border: none;
+    color: white;
+    padding: 15px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+/*-----------------------Vote Show end ---------------------------------------*/

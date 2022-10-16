@@ -19,6 +19,9 @@ class ConfigDevelopment(object):
     JWT_COOKIE_CSRF_PROTECT = False
     PROPAGATE_EXCEPTIONS = True
 
+    CACHE_TYPE = "SimpleCache"
+    CACHE_DEFAULT_TIMEOUT = 300
+
 
 class ConfigTest(object):
     DEBUG = True

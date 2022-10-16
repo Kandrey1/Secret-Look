@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="form__flash__message__error">
+        {% for msg in get_flashed_messages() %}
+            <span>{{ msg }}</span>
+        {% endfor %}
+    </div>
+    <h1 class="h1__show__vote">{{ context.vote.title }}</h1>
+    <form class="form__show__vote" action="" method="POST">
+
+        <div class="show__vote__output">
+            <span>{{ context.vote.question }}</span>
+            <ul>
+            {% if context.result %}
+                {% for answer in context.result[1:] %}
+                    <li class="show__vote__output__item">{{ answer.answer }}: {{ answer.percent }}%   (Всего:{{ answer.number_votes }})</li>
+                {% endfor %}
+            {% else %}
+                {% for answer in context.vote.rs_answer %}
+                    <li class="show__vote__output__item"><input type="radio" id="{{ answer.id }}" name="answer_case" value="{{ answer.id }}"> <label >{{ answer.answer }}</label></li>
+                {% endfor %}
+            {% endif%}
+            </ul>
+        </div>
+        {% if not context.result %}
+            <div class="case__answer__button">
+                <button class="button__case__answer" type="submit" value="" name="case__answer">Проголосовать</button>
+            </div>
+        {% endif%}
+    </form>
+
+{% endblock %}
