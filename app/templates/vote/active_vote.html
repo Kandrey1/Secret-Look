@@ -2,13 +2,13 @@
 
 {% block content %}
 
-    <h1 class="h1__active__vote">Вы можете проголосовать в следующих опросах:</h1>
+    <h1 class="h1__active__vote">Вы можете проголосовать в следующих опросах: (всего={{ context.votes_count }})</h1>
     <div class="active__vote__output">
 
         {% if context.votes %}
             <ul>
                 {% for vote in context.votes.items %}
-                    <li class="active__vote__output__item"><a href="{{ url_for('vote.show_vote', vote_url=vote.rs_show.vote_url) }}">{{ vote.title }}</a></li>
+                    <li class="active__vote__output__item"><a href="{{ url_for('vote.show_vote', vote_url=vote.vote_url) }}">{{ vote.title }}</a></li>
                 {% endfor %}
             </ul>
             <div class="pagination__vote">

@@ -5,9 +5,9 @@
   <h1 class="h1__vote_statistic">Статистика:</h1>
 
     <div class="vote__statistic__header">
-        <p class="vote__statistic__p">Статус: {{ context.vote.status }} {% if context.vote.rs_show.client_finished == 1 %} (Пользователем) {% endif %}</p>
+        <p class="vote__statistic__p">Статус: {{ context.vote.status }} {% if context.vote.client_finished == 1 %} (Пользователем) {% endif %}</p>
         </br>
-        <p class="vote__statistic__p">{% if context.vote.rs_show.vote_url %} Ссылка на опрос: {{ context.host }}{{ context.vote.rs_show.vote_url }} {% endif %}</p>
+        <p class="vote__statistic__p">{% if context.vote.vote_url %} Ссылка на опрос: {{ context.host }}{{ context.vote.vote_url }} {% endif %}</p>
         </br>
         <p class="vote__statistic__p">Дата начала опроса: {{ context.vote.date_start }}</p>
         <p class="vote__statistic__p">Дата окончания опроса: {{ context.vote.date_end }}</p>
@@ -28,7 +28,7 @@
             </ol>
     </div>
 
-    {% if context.status == 'Запущен' %}
+    {% if context.vote.status == 'started' %}
         <form class="form__finished__vote" action="" method="post">
             <div class="form__finished__vote__button">
                 <button class="button__finished__vote" value="" name="finished__vote">Завершить опрос</button>

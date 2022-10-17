@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.utils import Database, Converter
 from cache import cache
 from .model import Vote, VoteAnswer
-from .utils import get_votes_on_status, check_access_vote, get_id_last_vote, \
+from .utils import get_votes_on_status, check_access_vote, \
     get_result_vote, check_max_answer_vote, check_max_votes_client
 from .forms import VoteForm
 from ..models import db
@@ -28,6 +28,8 @@ def active_vote(page=1):
 
             context['votes'] = vote.order_by(Vote.date_start.desc()).\
                 paginate(page, per_page, error_out=False)
+
+            context['votes_count'] = vote.count()
 
             context['page'] = page
             context['max_page'] = vote.count() // per_page + 1
@@ -150,14 +152,10 @@ def form_new():
                                 client_id=get_jwt_identity())
                 Database.save(row=new_vote)
 
-                # todo после перехода на Postgres возвращать
-                #  созданный id самой БД
-                id_new_vote = get_id_last_vote(client_id=get_jwt_identity())
-
                 if not cache.get('list_answer_vote'):
                     raise Exception("Нет ни одного варианта ответа.")
 
-                cache_save_answers_new_vote(vote_id=id_new_vote)
+                cache_save_answers_new_vote(vote_id=new_vote.id)
 
                 flash("Новый опрос создан и добавлен")
                 return redirect(url_for('vote.votes'))
@@ -283,7 +281,7 @@ def statistic(vote_id: int):
 
         if request.method == "POST":
             if "finished__vote" in request.form:
-                vote_finish = Vote.query.filter_by(id=vote_id)
+                vote_finish = Vote.query.filter_by(id=vote_id).first()
                 vote_finish.set_client_close_vote()
                 return redirect(url_for('vote.votes'))
 
