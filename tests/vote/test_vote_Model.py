@@ -2,9 +2,13 @@ from app.vote.model import Vote, VoteAnswer
 from app.models import db
 
 
-def test_vote_set_status_started(app_test, create_vote_one):
+def test_vote_set_status_started(app_test, create_client_one, create_vote_one):
     """Устанавливает статус опроса 'started'."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
         new_vote = create_vote_one
 
         db.session.add(new_vote)
@@ -23,9 +27,13 @@ def test_vote_set_status_started(app_test, create_vote_one):
     assert vote.vote_url == ''
 
 
-def test_vote_set_status_finished(app_test, create_vote_one):
+def test_vote_set_status_finished(app_test, create_client_one, create_vote_one):
     """Устанавливает статус опроса 'finished'."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
         new_vote = create_vote_one
 
         db.session.add(new_vote)
@@ -42,9 +50,14 @@ def test_vote_set_status_finished(app_test, create_vote_one):
     assert Vote.query.first().status == 'finished'
 
 
-def test_vote_set_client_close_vote(app_test, create_vote_one):
+def test_vote_set_client_close_vote(app_test, create_client_one,
+                                    create_vote_one):
     """Устанавливает что клиент сам завершил опрос."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
         new_vote = create_vote_one
 
         db.session.add(new_vote)
@@ -60,9 +73,18 @@ def test_vote_set_client_close_vote(app_test, create_vote_one):
     assert Vote.query.first().client_finished is True
 
 
-def test_vote_answer_update_number(app_test, create_vote_answer_one):
+def test_vote_answer_update_number(app_test, create_client_one, create_vote_one,
+                                   create_vote_answer_one):
     """Увеличивает значение поля number_votes на 1."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
+        new_vote_1 = create_vote_one
+        db.session.add(new_vote_1)
+        db.session.commit()
+
         new_vote_answer = create_vote_answer_one
 
         db.session.add(new_vote_answer)

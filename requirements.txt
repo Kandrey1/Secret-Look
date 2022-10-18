@@ -17,3 +17,4 @@ celery==5.2.7
 redis==4.3.4
 flower==1.2.0
 eventlet==0.33.1
+psycopg2-binary==2.9.3

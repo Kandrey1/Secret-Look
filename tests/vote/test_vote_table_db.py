@@ -5,9 +5,13 @@ from app.utils import Database
 from app.vote.model import Vote, VoteAnswer
 
 
-def test_vote_add_row(app_test, create_vote_one):
+def test_vote_add_row(app_test, create_client_one, create_vote_one):
     """Тестирование таблицы 'vote' в БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
         new_vote = create_vote_one
 
         db.session.add(new_vote)
@@ -28,9 +32,13 @@ def test_vote_add_row(app_test, create_vote_one):
     assert vote.client_finished == 0
 
 
-def test_vote_update_row(app_test, create_vote_one):
+def test_vote_update_row(app_test, create_client_one, create_vote_one):
     """Обновление записи в БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
         new_vote = create_vote_one
 
         db.session.add(new_vote)
@@ -58,7 +66,6 @@ def test_vote_update_row(app_test, create_vote_one):
         new_vote.date_end = datetime.datetime.strptime('2022-6-11T12:00',
                                                        '%Y-%m-%dT%H:%M')
         new_vote.question = 'question2'
-        new_vote.client_id = 2
         new_vote.status = 'started'
         new_vote.vote_url = 'url'
         new_vote.client_finished = 1
@@ -75,15 +82,22 @@ def test_vote_update_row(app_test, create_vote_one):
     assert vote.date_end == datetime.datetime.strptime('2022-6-11T12:00',
                                                        '%Y-%m-%dT%H:%M')
     assert vote.question == 'question2'
-    assert vote.client_id == 2
+    assert vote.client_id == 1
     assert Vote.query.first().status == 'started'
     assert vote.vote_url == 'url'
     assert vote.client_finished == 1
 
 
-def test_vote_delete_row(app_test, create_vote_two, create_vote_one):
+def test_vote_delete_row(app_test, create_client_one, create_client_two,
+                         create_vote_two, create_vote_one):
     """Удаление записи в БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        new_client_2 = create_client_two
+
+        db.session.add_all([new_client_1, new_client_2])
+        db.session.commit()
+
         new_vote_1 = create_vote_one
         new_vote_2 = create_vote_two
 
@@ -121,9 +135,18 @@ def test_vote_delete_row(app_test, create_vote_two, create_vote_one):
     assert vote.client_finished == 0
 
 
-def test_vote_answer_add_row(app_test, create_vote_answer_one):
+def test_vote_answer_add_row(app_test, create_client_one, create_vote_one,
+                             create_vote_answer_one):
     """Тестирование таблицы 'vote_answer' в БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
+        new_vote_1 = create_vote_one
+        db.session.add(new_vote_1)
+        db.session.commit()
+
         new_vote_answer = create_vote_answer_one
 
         db.session.add(new_vote_answer)
@@ -133,14 +156,22 @@ def test_vote_answer_add_row(app_test, create_vote_answer_one):
 
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer1'
-    assert vote_answer.vote_id == 4
+    assert vote_answer.vote_id == 1
     assert vote_answer.number_votes == 123
 
 
-def test_vote_answer_delete_row(app_test, create_vote_answer_one,
-                                create_vote_answer_two):
+def test_vote_answer_delete_row(app_test, create_client_one, create_vote_one,
+                                create_vote_answer_one, create_vote_answer_two):
     """Удаление записи в БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
+        new_vote_1 = create_vote_one
+        db.session.add(new_vote_1)
+        db.session.commit()
+
         new_vote_answer_1 = create_vote_answer_one
         new_vote_answer_2 = create_vote_answer_two
 
@@ -151,7 +182,7 @@ def test_vote_answer_delete_row(app_test, create_vote_answer_one,
 
     assert VoteAnswer.query.count() == 2
     assert vote_answer.answer == 'answer1'
-    assert vote_answer.vote_id == 4
+    assert vote_answer.vote_id == 1
     assert vote_answer.number_votes == 123
 
     with app_test.app_context():
@@ -162,13 +193,20 @@ def test_vote_answer_delete_row(app_test, create_vote_answer_one,
 
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer2'
-    assert vote_answer.vote_id == 6
+    assert vote_answer.vote_id == 1
     assert vote_answer.number_votes == 321
 
 
-def test_vote_cascade_delete(app_test, create_vote_one, create_vote_two):
+def test_vote_cascade_delete(app_test, create_client_one, create_client_two,
+                             create_vote_one, create_vote_two):
     """Проверка работы каскадного удаления, при удалении vote."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        new_client_2 = create_client_two
+
+        db.session.add_all([new_client_1, new_client_2])
+        db.session.commit()
+
         new_vote_1 = create_vote_one
         new_vote_2 = create_vote_two
         db.session.add_all([new_vote_1, new_vote_2])

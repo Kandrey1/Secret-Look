@@ -1,16 +1,26 @@
 import os
-
+from dotenv import load_dotenv
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+load_dotenv('.env')
 
 
 class ConfigDevelopment(object):
     DEBUG = True
     TRAP_HTTP_EXCEPTIONS = True
     SECRET_KEY = os.environ.get('SECRET_KEY_DEVELOPMENT')
-
-    # todo заменить на Postgres после формирования структуры приложения
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
-                              os.path.join(basedir, 'database/db.sqlite3')
+    DB_URL = 'postgresql+psycopg2://{user}:{psw}@{url}/{db}'.format(
+        user=os.environ.get('POSTGRES_USER'),
+        psw=os.environ.get('POSTGRES_PASSWORD'),
+        url=f"{os.environ.get('POSTGRES_HOSTNAME')}:"
+            f"{os.environ.get('POSTGRES_PORT')}",
+        db=os.environ.get('POSTGRES_DB'))
+    # DB_URL = 'postgresql+psycopg2://{user}:{psw}@{url}/{db}'.format(
+    #     user=f"{os.environ.get('POSTGRES_USER')}",
+    #     psw='pgpass',
+    #     url='localhost:5432',
+    #     db='secretlook')
+    SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -25,9 +35,13 @@ class ConfigDevelopment(object):
 
 class ConfigTest(object):
     DEBUG = True
-    SECRET_KEY = 'fgkjlhweriuywq324h3g24hjg32j4k124g32l;gg'
-
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + \
-                              os.path.join(basedir, 'tests/db_test.sqlite3')
+    SECRET_KEY = os.environ.get('SECRET_KEY_TEST')
+    DB_URL = 'postgresql+psycopg2://{user}:{psw}@{url}/{db}'.format(
+        user=os.environ.get('POSTGRES_USER'),
+        psw=os.environ.get('POSTGRES_PASSWORD'),
+        url=f"{os.environ.get('POSTGRES_HOSTNAME')}:"
+            f"{os.environ.get('POSTGRES_PORT')}",
+        db=os.environ.get('POSTGRES_DB_TEST'))
+    SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

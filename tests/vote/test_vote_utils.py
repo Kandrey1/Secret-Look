@@ -4,9 +4,15 @@ from app.vote.utils import check_access_vote, check_max_answer_vote, \
     check_max_votes_client, get_votes_count
 
 
-def test_vote_check_access_vote(app_test, create_vote_one, create_vote_two):
+def test_vote_check_access_vote(app_test, create_client_one, create_client_two,
+                                create_vote_one, create_vote_two):
     """Проверка доступа у пользователя к опросу."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        new_client_2 = create_client_two
+        db.session.add_all([new_client_1, new_client_2])
+        db.session.commit()
+
         new_vote_1 = create_vote_one
         new_vote_2 = create_vote_two
 
@@ -34,9 +40,14 @@ def test_vote_check_max_votes_client():
 #     """Возвращает список опросов клиента, со статусом status(параметр)."""
 
 
-def test_vote_get_votes_count(app_test, create_vote_one, create_vote_two):
+def test_vote_get_votes_count(app_test, create_client_one, create_vote_one,
+                              create_vote_two):
     """Возвращает количество опросов клиента, со статусом status(параметр)."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
         new_vote_1 = create_vote_one
 
         db.session.add(new_vote_1)

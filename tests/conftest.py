@@ -20,6 +20,7 @@ def app_test():
 
         yield app
 
+        db.session.close()
         db.drop_all()
 
 
@@ -59,10 +60,10 @@ def create_vote_two():
 
 @pytest.fixture
 def create_vote_answer_one():
-    return VoteAnswer(answer='answer1', vote_id=4, number_votes=123)
+    return VoteAnswer(answer='answer1', vote_id=1, number_votes=123)
 
 
 @pytest.fixture
 def create_vote_answer_two():
-    return VoteAnswer(answer='answer2', vote_id=6, number_votes=321)
+    return VoteAnswer(answer='answer2', vote_id=1, number_votes=321)
 # ------------------------------ vote end --------------------------------------

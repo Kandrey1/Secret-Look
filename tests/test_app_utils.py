@@ -1,6 +1,7 @@
 import datetime
 
 from app.client.model import Client
+from app.vote.model import Vote, VoteAnswer
 from passlib.hash import bcrypt
 from app.models import db
 from app.utils import Database, Converter
@@ -8,7 +9,6 @@ from app.utils import Database, Converter
 
 # ====================== DATABASE ==============================================
 # --------------------------- SAVE ---------------------------------------------
-from app.vote.model import Vote, VoteAnswer
 
 
 def test_database_save_client(app_test, create_client_one):
@@ -26,9 +26,13 @@ def test_database_save_client(app_test, create_client_one):
     assert bcrypt.verify('pass1', Client.query.first().password)
 
 
-def test_database_save_vote(app_test, create_vote_one):
+def test_database_save_vote(app_test, create_client_one, create_vote_one):
     """Сохранение записи в БД."""
     with app_test.app_context():
+        new_client = create_client_one
+        db.session.add(new_client)
+        db.session.commit()
+
         new_vote = create_vote_one
 
     Database.save(row=new_vote)
@@ -48,9 +52,18 @@ def test_database_save_vote(app_test, create_vote_one):
     assert vote.client_finished == 0
 
 
-def test_database_save_vote_answer(app_test, create_vote_answer_one):
+def test_database_save_vote_answer(app_test, create_client_one, create_vote_one,
+                                   create_vote_answer_one):
     """Сохранение записи в БД."""
     with app_test.app_context():
+        new_client = create_client_one
+        db.session.add(new_client)
+        db.session.commit()
+
+        new_vote = create_vote_one
+        db.session.add(new_vote)
+        db.session.commit()
+
         new_vote_answer = create_vote_answer_one
 
     Database.save(row=new_vote_answer)
@@ -59,7 +72,7 @@ def test_database_save_vote_answer(app_test, create_vote_answer_one):
 
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer1'
-    assert vote_answer.vote_id == 4
+    assert vote_answer.vote_id == 1
     assert vote_answer.number_votes == 123
 
 
@@ -86,9 +99,16 @@ def test_database_dell_client(app_test, create_client_one, create_client_two):
     assert bcrypt.verify('pass2', Client.query.first().password)
 
 
-def test_database_dell_vote(app_test, create_vote_one, create_vote_two):
+def test_database_dell_vote(app_test, create_client_one, create_client_two,
+                            create_vote_one, create_vote_two):
     """Удаление записи из БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        new_client_2 = create_client_two
+
+        db.session.add_all([new_client_1, new_client_2])
+        db.session.commit()
+
         new_vote_1 = create_vote_one
         new_vote_2 = create_vote_two
 
@@ -126,10 +146,19 @@ def test_database_dell_vote(app_test, create_vote_one, create_vote_two):
     assert vote.client_finished == 0
 
 
-def test_database_dell_vote_answer(app_test, create_vote_answer_one,
+def test_database_dell_vote_answer(app_test, create_client_one,
+                                   create_vote_one, create_vote_answer_one,
                                    create_vote_answer_two):
     """Удаление записи из БД."""
     with app_test.app_context():
+        new_client_1 = create_client_one
+        db.session.add(new_client_1)
+        db.session.commit()
+
+        new_vote_1 = create_vote_one
+        db.session.add(new_vote_1)
+        db.session.commit()
+
         new_vote_answer_1 = create_vote_answer_one
         new_vote_answer_2 = create_vote_answer_two
 
@@ -140,7 +169,7 @@ def test_database_dell_vote_answer(app_test, create_vote_answer_one,
 
     assert VoteAnswer.query.count() == 2
     assert vote_answer.answer == 'answer1'
-    assert vote_answer.vote_id == 4
+    assert vote_answer.vote_id == 1
     assert vote_answer.number_votes == 123
 
     Database.dell(table=VoteAnswer, delete_id=1)
@@ -149,7 +178,7 @@ def test_database_dell_vote_answer(app_test, create_vote_answer_one,
 
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer2'
-    assert vote_answer.vote_id == 6
+    assert vote_answer.vote_id == 1
     assert vote_answer.number_votes == 321
 
 
@@ -179,15 +208,19 @@ def test_database_update_client(app_test, create_client_one):
     assert bcrypt.verify('pass2', Client.query.first().password)
 
 
-def test_database_update_vote(app_test, create_vote_one):
+def test_database_update_vote(app_test, create_client_one, create_vote_one):
     """Обновление записи в БД."""
     update = {'title': 'title2',
               'date_start': '2022-6-10T12:00',
               'date_end': '2022-6-11T12:00',
               'question': 'question2',
-              'client_id': 2}
+              'client_id': 1}
 
     with app_test.app_context():
+        new_client = create_client_one
+        db.session.add(new_client)
+        db.session.commit()
+
         new_vote = create_vote_one
 
         db.session.add(new_vote)
@@ -218,7 +251,7 @@ def test_database_update_vote(app_test, create_vote_one):
     assert vote.date_end == datetime.datetime.strptime('2022-6-11T12:00',
                                                        '%Y-%m-%dT%H:%M')
     assert vote.question == 'question2'
-    assert vote.client_id == 2
+    assert vote.client_id == 1
     assert vote.status == 'waiting'
     assert vote.vote_url == ''
     assert vote.client_finished == 0

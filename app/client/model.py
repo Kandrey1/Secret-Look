@@ -38,7 +38,7 @@ class Client(db.Model):
         self.password = self.get_hash_pass(password=password)
 
     def __repr__(self):
-        return f"<{self.ip_reg} : {self.login} - {self.email}>"
+        return f"<{self.id} : {self.login} - {self.email}>"
 
     @classmethod
     def get_hash_pass(cls, password: str) -> str:
