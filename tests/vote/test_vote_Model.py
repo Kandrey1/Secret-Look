@@ -20,7 +20,7 @@ def test_vote_set_status_started(app_test, create_vote_one):
 
     assert Vote.query.count() == 1
     assert Vote.query.first().status == 'started'
-    assert vote.vote_url == '867nv'
+    assert vote.vote_url == ''
 
 
 def test_vote_set_status_finished(app_test, create_vote_one):

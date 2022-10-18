@@ -1,0 +1,15 @@
+{% extends "profile/profile_base.html" %}
+
+{% block profile_content %}
+
+    <div class="profile__settings__main_inf" >
+        <h2 class="h2__profile">Информация аккаунта:</h2>
+        <p class="profile__settings__p">Дата создания: {{ context.client.create.replace(microsecond=0) }}</p>
+        <p class="profile__settings__p">Логин: {{ context.client.login }}</p>
+        <p class="profile__settings__p">Email: {{ context.client.email }}</p>
+        <p class="profile__settings__p"> <a href="{{ url_for('profile.change_pass') }}">сменить пароль</a></p>
+        <br>
+        <p class="profile__settings__p"> <a href="{{ url_for('profile.delete_account') }}">Удалить аккаунт</a></p>
+    </div>
+
+{% endblock %}

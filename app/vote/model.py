@@ -62,7 +62,6 @@ class Vote(db.Model):
         """Устанавливает status в значение 'started'."""
         try:
             self.status = 'started'
-            self.vote_url = self._get_short_url_from_id()
             db.session.commit()
 
         except Exception as e:
@@ -87,6 +86,12 @@ class Vote(db.Model):
     def get_id_from_short_url(cls, s: str) -> int:
         """Преобразует короткую строку в число."""
         return short_url.decode_url(s)
+
+    def create_vote_url(self):
+        """Преобразует id записи в короткую строку и устанавливает
+            ее в vote_url.
+        """
+        self.vote_url = self._get_short_url_from_id()
 
     def set_client_close_vote(self) -> None:
         """Устанавливает client_finished в значение True.

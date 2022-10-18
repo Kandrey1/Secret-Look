@@ -151,6 +151,7 @@ def form_new():
                                     form.date_end.data),
                                 client_id=get_jwt_identity())
                 Database.save(row=new_vote)
+                new_vote.create_vote_url()
 
                 if not cache.get('list_answer_vote'):
                     raise Exception("Нет ни одного варианта ответа.")

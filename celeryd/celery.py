@@ -6,12 +6,12 @@ clr = Celery('clr', include=['celeryd.tasks'])
 
 clr.config_from_object('celeryd.celeryconfig')
 clr.conf.beat_schedule = {
-    'run-me-every-15-minute-task': {
+    'run-me-every-5-minute-task': {
         'task': 'celeryd.tasks.check_vote_which_be_running',
-        'schedule': crontab(minute='*/15')
+        'schedule': crontab(minute='*/5')
     },
-    'run-me-every-20-minute-task': {
+    'run-me-every-10-minute-task': {
         'task': 'celeryd.tasks.check_vote_which_be_finished',
-        'schedule': crontab(minute='*/20')
+        'schedule': crontab(minute='*/10')
     }
 }

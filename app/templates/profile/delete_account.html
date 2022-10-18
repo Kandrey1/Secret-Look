@@ -1,0 +1,34 @@
+{% extends "profile/profile_base.html" %}
+
+{% block profile_content %}
+
+<h1 class="h1__form">Удаление аккаунта</h1>
+    <h2 class="h2__profile">ВНИМАНИЕ!</h2>
+    <p class="profile__settings__p">После нажатия кнопки "УДАЛИТЬ АККАУНТ" Ваш аккаунт будет удален безвозвратно и все данные связанные тоже.</p>
+    <p class="profile__settings__p">Если Вы все равно хотите удалить свой аккаунт, то для его удаления введите свой пароль два раза.</p>
+
+    <div class="form__delete__account">
+
+        <form class="form__delete__account" action="" method="post">
+
+            {{ form.csrf_token() }}
+
+            {% for field in form if field.name != "csrf_token" %}
+
+                {% if field.name != "submit" %}
+                    {{ field.label }}
+                {% else %}
+                    </br>
+                    </br>
+                {% endif %}
+
+                <p>{{ field }}
+                {% for error in field.errors %}
+                    <span class="form__error__label">{{ error }}</span>
+                {% endfor %}
+                </p>
+            {% endfor %}
+        </form>
+    </div>
+
+{% endblock %}

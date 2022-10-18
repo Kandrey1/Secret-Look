@@ -20,7 +20,7 @@
                             <div class="enter">
                                 {% if session.user_login %}
                                     <ul class="enter__list">
-                                        <li class="enter__item"><a href="{{ url_for('client.profile') }}" class="enter__link">Личный кабинет |</a></li>
+                                        <li class="enter__item"><a href="{{ url_for('profile.profile') }}" class="enter__link">Личный кабинет |</a></li>
                                         <li class="enter__item"><a href="{{ url_for('client.logout') }}" class="enter__link">| Выйти</a></li>
                                     </ul>
                                     </br>

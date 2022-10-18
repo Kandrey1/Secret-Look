@@ -159,6 +159,18 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
     margin: 0px 0px 10px 50px;
     font-size: 16px;
 }
+/*------------------------------------------------*/
+.profile__settings__main_inf {
+    margin: 10px 0px 0px 0px;
+}
+.profile__settings__p {
+    margin: 10px 0px 0px 20px;
+    font-size: 20px;
+}
+/*------------------------------------------------*/
+.form__delete__account {
+    margin: 30px 0px 0px 0px;
+}
 /*-----------------------Profile end -----------------------------------------*/
 /*-----------------------Vote start ------------------------------------------*/
 .form__vote__main__create {
