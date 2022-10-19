@@ -5,6 +5,7 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 
 
 from app import create_app
+from app.api.blueprint import api_bp
 from app.client.blueprint import client_bp
 from app.profile.blueprint_profile import profile_bp
 from app.models import db
@@ -25,6 +26,7 @@ def create_table():
     db.create_all()
 
 
+app.register_blueprint(api_bp, url_prefix='/api')
 app.register_blueprint(client_bp, url_prefix='/client')
 app.register_blueprint(profile_bp, url_prefix='/client/profile')
 app.register_blueprint(vote_bp, url_prefix='/vote')

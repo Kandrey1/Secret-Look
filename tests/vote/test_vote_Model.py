@@ -93,16 +93,16 @@ def test_vote_answer_update_number(app_test, create_client_one, create_vote_one,
     vote_answer = VoteAnswer.query.first()
 
     assert VoteAnswer.query.count() == 1
-    assert vote_answer.number_votes == 123
+    assert vote_answer.number_votes == 0
 
     VoteAnswer.update_number(id_update=1)
 
     vote_answer = VoteAnswer.query.first()
 
     assert VoteAnswer.query.count() == 1
-    assert vote_answer.number_votes == 124
+    assert vote_answer.number_votes == 1
 
     VoteAnswer.update_number(id_update=1)
     VoteAnswer.update_number(id_update=1)
 
-    assert vote_answer.number_votes == 126
+    assert vote_answer.number_votes == 3

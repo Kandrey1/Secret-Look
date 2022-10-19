@@ -57,6 +57,18 @@ class Client(db.Model):
                                     expires_delta=expire_delta)
         return token
 
+    def get_token_api(self, expire_time: int = 24 * 3) -> str:
+        """Возвращает токен клиента для использования API.
+            :param expire_time -- время действие токена в часах.
+            :type expire_time: int
+            :return token -- токен авторизованного пользователя.
+            :rtype token: str
+        """
+        expire_delta = datetime.timedelta(expire_time)
+        token = create_access_token(identity=self.email,
+                                    expires_delta=expire_delta)
+        return token
+
     @classmethod
     def authenticate(cls, email: str, password: str) -> object:
         """Проверяет есть ли пользователь с email и password в БД.

@@ -171,6 +171,20 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 .form__delete__account {
     margin: 30px 0px 0px 0px;
 }
+/*------------------------------------------------*/
+.profile__settings__token {
+    margin: 40px 0px 0px 0px;
+}
+.profile__settings__output__token {
+    margin: 10px 0px 0px 20px;
+}
+.profile__settings__output__token {
+    width: 80%;
+    height:30px;
+}
+.button__get__token_api {
+    margin: 10px 0px 0px 20px;
+}
 /*-----------------------Profile end -----------------------------------------*/
 /*-----------------------Vote start ------------------------------------------*/
 .form__vote__main__create {

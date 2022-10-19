@@ -122,10 +122,10 @@ class VoteAnswer(db.Model):
                                                   ondelete='CASCADE'))
     number_votes = db.Column(db.Integer)
 
-    def __init__(self, answer, vote_id, number_votes):
+    def __init__(self, answer, vote_id):
         self.answer = answer
         self.vote_id = vote_id
-        self.number_votes = number_votes
+        self.number_votes = 0
 
     def __repr__(self):
         return f"<{self.vote_id} : {self.answer} - {self.number_votes}>"
@@ -152,6 +152,13 @@ class VoteSchema(ma.Schema):
         fields = ('id', 'create', 'title', 'date_start', 'date_end',
                   'question', 'vote_url', 'status', 'client_finished',
                   'client_id')
+
+
+class VoteShortSchema(ma.Schema):
+    class Meta:
+        model = Vote
+        fields = ('id', 'title', 'date_start',  'date_end', 'status',
+                  'client_finished')
 
 
 class VoteAnswerSchema(ma.Schema):

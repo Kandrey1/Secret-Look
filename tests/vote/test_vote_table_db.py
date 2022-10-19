@@ -157,7 +157,7 @@ def test_vote_answer_add_row(app_test, create_client_one, create_vote_one,
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer1'
     assert vote_answer.vote_id == 1
-    assert vote_answer.number_votes == 123
+    assert vote_answer.number_votes == 0
 
 
 def test_vote_answer_delete_row(app_test, create_client_one, create_vote_one,
@@ -183,7 +183,7 @@ def test_vote_answer_delete_row(app_test, create_client_one, create_vote_one,
     assert VoteAnswer.query.count() == 2
     assert vote_answer.answer == 'answer1'
     assert vote_answer.vote_id == 1
-    assert vote_answer.number_votes == 123
+    assert vote_answer.number_votes == 0
 
     with app_test.app_context():
         VoteAnswer.query.filter(VoteAnswer.id == 1).delete()
@@ -194,7 +194,7 @@ def test_vote_answer_delete_row(app_test, create_client_one, create_vote_one,
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer2'
     assert vote_answer.vote_id == 1
-    assert vote_answer.number_votes == 321
+    assert vote_answer.number_votes == 0
 
 
 def test_vote_cascade_delete(app_test, create_client_one, create_client_two,
@@ -211,11 +211,11 @@ def test_vote_cascade_delete(app_test, create_client_one, create_client_two,
         new_vote_2 = create_vote_two
         db.session.add_all([new_vote_1, new_vote_2])
 
-        new_answer_1 = VoteAnswer(answer='answ1', vote_id=1, number_votes=0)
-        new_answer_2 = VoteAnswer(answer='answ2', vote_id=1, number_votes=0)
-        new_answer_3 = VoteAnswer(answer='answ3', vote_id=2, number_votes=0)
-        new_answer_4 = VoteAnswer(answer='answ4', vote_id=2, number_votes=0)
-        new_answer_5 = VoteAnswer(answer='answ5', vote_id=1, number_votes=0)
+        new_answer_1 = VoteAnswer(answer='answ1', vote_id=1)
+        new_answer_2 = VoteAnswer(answer='answ2', vote_id=1)
+        new_answer_3 = VoteAnswer(answer='answ3', vote_id=2)
+        new_answer_4 = VoteAnswer(answer='answ4', vote_id=2)
+        new_answer_5 = VoteAnswer(answer='answ5', vote_id=1)
         db.session.add_all([new_answer_1, new_answer_2, new_answer_3,
                             new_answer_4, new_answer_5])
 

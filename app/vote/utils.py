@@ -1,6 +1,5 @@
-from sqlalchemy import desc, func, select
+from sqlalchemy import desc
 
-from app.models import db
 from app.vote.model import Vote
 from .settings import MAX_ANSWER_ON_VOTE, MAX_VOTES_CLIENT
 
@@ -74,26 +73,7 @@ def get_votes_count(client_id: int, status: str) -> int:
     return votes_count
 
 
-def get_id_last_vote(client_id: int) -> int:
-    """Возвращает id опроса, который создан самым последним.
-        :param client_id -- id клиента.
-        :type client_id: int
-        :return last_id -- id опроса, созданного последним.
-        :rtype last_id: int
-    """
-    try:
-        query = select([Vote.id, func.max(Vote.id)]).\
-            where(Vote.client_id == client_id)
-
-        last_id = db.session.execute(query).fetchone()[0]
-
-    except Exception as e:
-        raise Exception(f'{e}')
-
-    return last_id
-
-
-def get_result_vote(vote_id: int) -> list[dict[str, int or str]]:
+def get_result_vote(vote_id: int) -> list:
     """Возвращает словарь со статистикой по опросу.
        :param vote_id -- id опроса.
        :type vote_id: int

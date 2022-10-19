@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, render_template, redirect, url_for
+from flask import Blueprint, flash, render_template, redirect, url_for, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from passlib.hash import bcrypt
 
@@ -40,7 +40,14 @@ def settings():
     context = dict()
     context['title'] = 'Настройки'
     try:
-        context['client'] = Client.query.get(get_jwt_identity())
+        client = Client.query.get(get_jwt_identity())
+        context['client'] = client
+        context['token_api'] = request.args.get('token_api')
+
+        if request.method == "POST":
+            if "get_token_api" in request.form:
+                token = client.get_token_api()
+                return redirect(url_for('profile.settings', token_api=token))
 
     except Exception as e:
         flash(f'Error: <{e}>')

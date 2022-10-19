@@ -24,6 +24,13 @@ def app_test():
         db.drop_all()
 
 
+@pytest.fixture
+def client_test(app_test):
+    from app.api.blueprint import api_bp
+    app_test.register_blueprint(api_bp, url_prefix='/api')
+    return app_test.test_client()
+
+
 # ------------------------------ main ------------------------------------------
 # ------------------------------ client start ----------------------------------
 @pytest.fixture
@@ -59,11 +66,25 @@ def create_vote_two():
 
 
 @pytest.fixture
+def create_vote_three():
+    vote = Vote(title='title3',
+                date_start='2022-6-10T12:00',
+                date_end='2022-6-11T12:00',
+                question='question3',
+                client_id=1)
+    return vote
+
+
+@pytest.fixture
 def create_vote_answer_one():
-    return VoteAnswer(answer='answer1', vote_id=1, number_votes=123)
+    return VoteAnswer(answer='answer1', vote_id=1)
 
 
 @pytest.fixture
 def create_vote_answer_two():
-    return VoteAnswer(answer='answer2', vote_id=1, number_votes=321)
+    return VoteAnswer(answer='answer2', vote_id=1)
+
+
 # ------------------------------ vote end --------------------------------------
+# ------------------------------ api start -------------------------------------
+# ------------------------------ api end ---------------------------------------

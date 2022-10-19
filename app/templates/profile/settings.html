@@ -12,4 +12,16 @@
         <p class="profile__settings__p"> <a href="{{ url_for('profile.delete_account') }}">Удалить аккаунт</a></p>
     </div>
 
+    <div class="profile__settings__token" >
+        <h2 class="h2__profile">Токен для API</h2>
+        <p class="profile__settings__p">Срок действия токена 3 дня.</p>
+        <textarea name="Text1" cols="110" rows="6" readonly>
+             {{ context.token_api }}
+        </textarea>
+        </br>
+        <form class="form__get__token__api" action="" method="post">
+            <button class="button__get__token_api" name="get_token_api" value="">Получить новый ТОКЕН</button>
+        </form>
+    </div>
+
 {% endblock %}

@@ -73,7 +73,7 @@ def test_database_save_vote_answer(app_test, create_client_one, create_vote_one,
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer1'
     assert vote_answer.vote_id == 1
-    assert vote_answer.number_votes == 123
+    assert vote_answer.number_votes == 0
 
 
 # --------------------------- DELETE -------------------------------------------
@@ -170,7 +170,7 @@ def test_database_dell_vote_answer(app_test, create_client_one,
     assert VoteAnswer.query.count() == 2
     assert vote_answer.answer == 'answer1'
     assert vote_answer.vote_id == 1
-    assert vote_answer.number_votes == 123
+    assert vote_answer.number_votes == 0
 
     Database.dell(table=VoteAnswer, delete_id=1)
 
@@ -179,7 +179,7 @@ def test_database_dell_vote_answer(app_test, create_client_one,
     assert VoteAnswer.query.count() == 1
     assert vote_answer.answer == 'answer2'
     assert vote_answer.vote_id == 1
-    assert vote_answer.number_votes == 321
+    assert vote_answer.number_votes == 0
 
 
 # --------------------------- UPDATE -------------------------------------------
