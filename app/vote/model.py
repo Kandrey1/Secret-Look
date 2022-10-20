@@ -149,16 +149,8 @@ class VoteAnswer(db.Model):
 class VoteSchema(ma.Schema):
     class Meta:
         model = Vote
-        fields = ('id', 'create', 'title', 'date_start', 'date_end',
-                  'question', 'vote_url', 'status', 'client_finished',
-                  'client_id')
-
-
-class VoteShortSchema(ma.Schema):
-    class Meta:
-        model = Vote
-        fields = ('id', 'title', 'date_start',  'date_end', 'status',
-                  'client_finished')
+        fields = ('id', 'title', 'date_start', 'date_end',
+                  'question', 'vote_url', 'status', 'client_finished')
 
 
 class VoteAnswerSchema(ma.Schema):

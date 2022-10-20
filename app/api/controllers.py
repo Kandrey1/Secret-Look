@@ -2,7 +2,7 @@ from flask import request, jsonify
 from flask_restful import Resource
 
 from .utils import AccessClient
-from app.vote.model import Vote, VoteAnswer, VoteSchema, VoteShortSchema
+from app.vote.model import Vote, VoteAnswer, VoteSchema
 from app.utils import Database
 from ..vote.settings import MAX_ANSWER_ON_VOTE
 from ..vote.utils import check_max_answer_vote, check_max_votes_client, \
@@ -12,7 +12,7 @@ from ..vote.utils import check_max_answer_vote, check_max_votes_client, \
 class AllVoteClient(Resource):
     """Содержит два метода:
        post -- Добавляет новой опрос с вариантами ответа.
-       get -- Возвращает все опросы клиента.
+       get -- Возвращает список всех опросов клиента.
     """
     def post(self):
         """Добавляет новой опрос с вариантами ответа.
@@ -51,14 +51,14 @@ class AllVoteClient(Resource):
         return jsonify({f'{datas["title"]}': 'Add'})
 
     def get(self):
-        """Возвращает все опросы клиента, с сокращенными данными."""
+        """Возвращает список всех опросов клиента."""
         try:
             client = AccessClient().check(headers=request.headers)
 
             votes = list()
 
             for v in client.rs_vote:
-                votes.append(VoteShortSchema().dump(v))
+                votes.append(VoteSchema().dump(v))
 
         except Exception as e:
             return {'Error': f'{e}'}
@@ -72,7 +72,9 @@ class VoteClient(Resource):
         delete -- Удаляет опрос, если он в статусе 'waiting'(не запущен).
     """
     def get(self, vote_id: int):
-        """Возвращает подробную информацию по опросу."""
+        """Возвращает подробную информацию по опросу с ответами и
+            количеством проголосовавших.
+        """
         try:
             client = AccessClient().check(headers=request.headers)
 
@@ -81,11 +83,16 @@ class VoteClient(Resource):
 
             vote = Vote.query.filter(Vote.client_id == client.id,
                                      Vote.id == vote_id).first()
+            votes = VoteSchema().dump(vote)
+
+            answers = [{a.answer: a.number_votes} for a in vote.rs_answer]
+
+            votes.update({"answers": answers})
 
         except Exception as e:
             return {'Error': f'{e}'}
 
-        return jsonify(VoteSchema().dump(vote))
+        return jsonify(votes)
 
     def delete(self, vote_id: int):
         """Удаляет опрос, если он в статусе 'waiting'(не запущен).
