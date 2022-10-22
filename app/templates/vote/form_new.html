@@ -19,12 +19,12 @@
             </div>
             <div class="form__vote__date__start">
                 <p>{{ form.date_start.label }}</p>
-                {% if context.temp_vote %} {{ form.date_start(value=context.temp_vote.date_start) }} {% else %} {{ form.date_start }} {% endif %}
+                {% if context.temp_vote %} {{ form.date_start(value=context.temp_vote.date_start) }} {% else %} {{ form.date_start(value=context.date_today) }} {% endif %}
                 <span class="form__error__label">{{ form.errors.date_start }}</span>
             </div>
             <div class="form__vote__date__end">
                 <p>{{ form.date_end.label }}</p>
-                {% if context.temp_vote %} {{ form.date_end(value=context.temp_vote.date_end) }} {% else %} {{ form.date_end }} {% endif %}
+                {% if context.temp_vote %} {{ form.date_end(value=context.temp_vote.date_end) }} {% else %} {{ form.date_end(value=context.date_today) }} {% endif %}
                 <span class="form__error__label">{{ form.errors.date_end }}</span>
             </div>
             <div class="form__vote__button__save">

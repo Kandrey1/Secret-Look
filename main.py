@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from flask import render_template
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.exceptions import NoAuthorizationError
@@ -12,7 +11,6 @@ from app.models import db
 from app.vote.blueprint import vote_bp
 from cache import cache
 
-load_dotenv('.env')
 
 app = create_app()
 
@@ -38,6 +36,22 @@ def index():
     context = dict()
     context['title'] = "Secret Look"
     return render_template("index.html", context=context)
+
+
+@app.route("/about/api/")
+def about_api():
+    """Страница с описанием API сервиса."""
+    context = dict()
+    context['title'] = "API"
+    return render_template("api/info.html", context=context)
+
+
+@app.route("/survey")
+def survey():
+    """Публичные анкеты."""
+    context = dict()
+    context['title'] = "Survey"
+    return render_template("survey/public.html", context=context)
 
 
 @app.errorhandler(404)

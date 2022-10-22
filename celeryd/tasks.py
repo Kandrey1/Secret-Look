@@ -8,7 +8,7 @@ app = create_app()
 
 
 @clr.task
-def check_vote_which_be_running():
+def check_vote_which_running():
     """Проверяет, есть ли опросы, которые должны были быть
         запущены по времени, но по факту не запущены.
     """
@@ -29,7 +29,7 @@ def check_vote_which_be_running():
 
 
 @clr.task
-def check_vote_which_be_finished():
+def check_vote_which_finished():
     """Проверяет, есть ли опросы, которые надо завершить ближайшее время.
     """
     try:

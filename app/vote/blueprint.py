@@ -7,7 +7,8 @@ from app.utils import Database, Converter
 from cache import cache
 from .model import Vote, VoteAnswer
 from .utils import get_votes_on_status, check_access_vote, \
-    get_result_vote, check_max_answer_vote, check_max_votes_client
+    get_result_vote, check_max_answer_vote, check_max_votes_client, \
+    check_validate_date_start, check_validate_date_end
 from .forms import VoteForm
 from ..models import db
 from .settings import MAX_VOTE_PER_PAGE
@@ -128,10 +129,13 @@ def form_new():
             client_id=get_jwt_identity()).count()
 
         if not check_max_votes_client(current_votes=current_votes):
-            raise Exception('Вы не можете создать больше опросов.')
+            raise Exception('Вы достигли лимита на создания опросов.')
 
         if request.args.get('new_vote'):
             cache_clear_new_vote()
+
+        context['date_today'] = Converter.datetime_in_str(
+            date_time_obj=datetime.datetime.today())
 
         if request.method == "GET" and cache.get('list_answer_vote'):
             context['answers'] = enumerate(cache.get('list_answer_vote'),
@@ -143,6 +147,18 @@ def form_new():
 
         if form.is_submitted():
             if form.save_vote.data:
+                if not check_validate_date_start(form.date_start.data):
+                    flash('Дата запуска не может быть меньше текущей даты.')
+                    return redirect(url_for('vote.form_new'))
+
+                if not check_validate_date_end(start=form.date_start.data,
+                                               end=form.date_end.data):
+                    flash('Дата завершения не может быть меньше даты запуска.')
+                    return redirect(url_for('vote.form_new'))
+
+                if not cache.get('list_answer_vote'):
+                    raise Exception("Нет ни одного варианта ответа.")
+
                 new_vote = Vote(title=form.title.data,
                                 question=form.question.data,
                                 date_start=Converter.datetime_in_str(
@@ -152,9 +168,6 @@ def form_new():
                                 client_id=get_jwt_identity())
                 Database.save(row=new_vote)
                 new_vote.create_vote_url()
-
-                if not cache.get('list_answer_vote'):
-                    raise Exception("Нет ни одного варианта ответа.")
 
                 cache_save_answers_new_vote(vote_id=new_vote.id)
 
@@ -187,7 +200,7 @@ def form_new():
                 return redirect(url_for('vote.form_new'))
 
     except Exception as e:
-        flash(f'Error: <{e}>')
+        flash(f'{e}')
 
     return render_template("vote/form_new.html", context=context, form=form)
 
@@ -212,11 +225,24 @@ def form_redact(vote_id_redact: int):
 
             context['vote_data'] = redact_vote
             context['answers'] = redact_vote.rs_answer
+            context['host'] = request.host_url + 'vote/show/'
+
             return render_template("vote/form_redact.html", context=context,
                                    form=form)
 
         if form.is_submitted():
             if form.save_vote.data:
+                if not check_validate_date_start(form.date_start.data):
+                    flash('Дата запуска не может быть меньше текущей даты.')
+                    return redirect(url_for('vote.form_redact',
+                                            vote_id_redact=vote_id_redact))
+
+                if not check_validate_date_end(start=form.date_start.data,
+                                               end=form.date_end.data):
+                    flash('Дата завершения не может быть меньше даты запуска.')
+                    return redirect(url_for('vote.form_redact',
+                                            vote_id_redact=vote_id_redact))
+
                 vote_update = {'title': form.title.data,
                                'question': form.question.data,
                                'date_start': Converter.datetime_in_str(
@@ -232,8 +258,7 @@ def form_redact(vote_id_redact: int):
                     filter_by(vote_id=vote_id_redact).count()
                 if check_max_answer_vote(current_answer=vote_count):
                     answer = VoteAnswer(answer=form.answer.data,
-                                        vote_id=vote_id_redact,
-                                        number_votes=0)
+                                        vote_id=vote_id_redact)
                     Database.save(row=answer)
                 else:
                     flash('Вы уже добавили максимальное кол-во ответов.')
@@ -252,7 +277,7 @@ def form_redact(vote_id_redact: int):
                 return redirect(url_for('vote.votes'))
 
     except Exception as e:
-        flash(f'Error: <{e}>')
+        flash(f'{e}')
 
     return render_template("vote/form_redact.html", context=context)
 
@@ -273,7 +298,7 @@ def statistic(vote_id: int):
 
             current_vote = Vote.query.get(vote_id)
 
-            context['host'] = 'localhost/'
+            context['host'] = request.host_url + 'vote/show/'
             context['vote'] = current_vote
 
             statistic_vote = get_result_vote(vote_id=vote_id)
@@ -306,7 +331,7 @@ def cache_save_answers_new_vote(vote_id: int) -> None:
     """
     try:
         for item in cache.get('list_answer_vote'):
-            answer = VoteAnswer(answer=item, vote_id=vote_id, number_votes=0)
+            answer = VoteAnswer(answer=item, vote_id=vote_id)
             db.session.add(answer)
         db.session.commit()
 

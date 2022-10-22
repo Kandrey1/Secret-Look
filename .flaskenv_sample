@@ -1,0 +1,4 @@
+FLASK_APP=              # должно быть main
+FLASK_DEBUG=            # должно быть TRUE
+FLASK_RUN_HOST=         # должно быть 0.0.0.0
+FLASK_RUN_PORT=         # должно быть 5000

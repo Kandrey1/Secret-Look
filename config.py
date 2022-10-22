@@ -1,14 +1,15 @@
 import os
 from dotenv import load_dotenv
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-load_dotenv('.env')
+load_dotenv()
 
 
 class ConfigDevelopment(object):
     DEBUG = True
     TRAP_HTTP_EXCEPTIONS = True
-    SECRET_KEY = os.environ.get('SECRET_KEY_DEVELOPMENT')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
     DB_URL = 'postgresql+psycopg2://{user}:{psw}@{url}/{db}'.format(
         user=os.environ.get('POSTGRES_USER'),
@@ -32,7 +33,7 @@ class ConfigDevelopment(object):
 
 class ConfigTest(object):
     DEBUG = True
-    SECRET_KEY = os.environ.get('SECRET_KEY_TEST')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     DB_URL = 'postgresql+psycopg2://{user}:{psw}@{url}/{db}'.format(
         user=os.environ.get('POSTGRES_USER'),
         psw=os.environ.get('POSTGRES_PASSWORD'),

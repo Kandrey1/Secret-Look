@@ -15,7 +15,9 @@
                         <ul class="menu__list">
                             <li class="menu__item">
                                 <a href="{{ url_for('index') }}" class="menu__link">Главная</a>
-                                <a href="{{ url_for('vote.active_vote', page=1) }}" class="menu__link">Действующие опросы</a>
+                                <a href="{{ url_for('vote.active_vote', page=1) }}" class="menu__link">Опросы</a>
+                                <a href="{{ url_for('survey') }}" class="menu__link">Анкеты</a>
+                                <a href="{{ url_for('about_api') }}" class="menu__link">API</a>
                             </li>
                             <div class="enter">
                                 {% if session.user_login %}

@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy import desc
 
 from app.vote.model import Vote
@@ -89,8 +91,8 @@ def get_result_vote(vote_id: int) -> list:
             raise Exception("Нет опроса чтобы получить результат")
 
         total = 0
-        for answer in Vote.query.get(vote_id).rs_answer:
-            total += answer.number_votes
+        for answ in Vote.query.get(vote_id).rs_answer:
+            total += answ.number_votes
 
         statistic.append({'total': total})
 
@@ -98,7 +100,13 @@ def get_result_vote(vote_id: int) -> list:
             temp_dict = dict()
             temp_dict['answer'] = answer.answer
             temp_dict['number_votes'] = answer.number_votes
-            temp_dict['percent'] = round(answer.number_votes * 100 / total, 1)
+
+            if total == 0:
+                percent = 0
+            else:
+                percent = round(answer.number_votes * 100 / total, 1)
+
+            temp_dict['percent'] = percent
 
             statistic.append(temp_dict)
 
@@ -106,3 +114,13 @@ def get_result_vote(vote_id: int) -> list:
         raise Exception(f'{e}')
 
     return statistic
+
+
+def check_validate_date_start(date: datetime) -> bool:
+    """Проверяет валидность даты запуска опроса."""
+    return False if date < datetime.datetime.today() else True
+
+
+def check_validate_date_end(start: datetime, end: datetime) -> bool:
+    """Проверяет валидность даты завершения опроса."""
+    return False if end < start else True

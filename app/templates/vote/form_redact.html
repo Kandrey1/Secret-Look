@@ -11,6 +11,8 @@
             </div>
         </form>
 
+        <p class="vote__statistic__p">{% if context.vote_data.vote_url %} Ссылка на опрос: {{ context.host }}{{ context.vote_data.vote_url }} {% endif %}</p>
+
         <form class="form__vote" action="" method="post">
 
             <div class="form__vote__title">
