@@ -1,6 +1,7 @@
 import datetime
 
-from flask import Blueprint, render_template, flash, request, redirect, url_for
+from flask import Blueprint, render_template, flash, request, redirect, \
+    url_for, make_response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.utils import Database, Converter
@@ -46,15 +47,22 @@ def show_vote(vote_url: str):
     """Страница запущенного опроса."""
     context = dict()
     voted = None
+    voted_cookie = False
     try:
         if request.method == "GET":
+            if request.cookies.get('list_voted'):
+                list_voted = request.cookies.get('list_voted').split(',')
+
+                if vote_url in list_voted:
+                    voted_cookie = True
+
             vote_show = Vote.query.get(Vote.get_id_from_short_url(vote_url))
 
             context['title'] = f'Опрос: {vote_show.title}'
             context['vote'] = vote_show
 
             voted = request.args.get('voted')
-            if voted == 'yes':
+            if voted == 'yes' or voted_cookie is True:
                 context['result'] = get_result_vote(vote_show.id)
 
             return render_template("vote/show_vote.html", context=context)
@@ -66,6 +74,19 @@ def show_vote(vote_url: str):
                 if case_answer:
                     VoteAnswer.update_number(id_update=case_answer)
                     voted = 'yes'
+
+                    resp = make_response(redirect(url_for('vote.show_vote',
+                                                          vote_url=vote_url,
+                                                          voted=voted)))
+                    if not request.cookies.get('list_voted'):
+                        resp.set_cookie('list_voted', vote_url,
+                                        max_age=86400)
+                    else:
+                        cookies = request.cookies.get('list_voted', type=str)
+                        update_cookie = cookies + ',' + vote_url
+                        resp.set_cookie('list_voted', update_cookie,
+                                        max_age=86400)
+                    return resp
                 else:
                     flash('Необходимо выбрать вариант ответа.')
                 return redirect(url_for('vote.show_vote', vote_url=vote_url,

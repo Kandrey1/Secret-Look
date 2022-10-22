@@ -323,17 +323,19 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight: inherit;}
 /*-----------------------Vote Active end -------------------------------------*/
 /*-----------------------Vote Show start -------------------------------------*/
 .h1__show__vote {
-    margin: 50px 0px 30px 0px;
+    margin: 50px 0px 50px 0px;
     font-size: 24px;
-    text-align: center
+    text-align: center;
 }
 .show__vote__output {
-    margin: 10px 0px 10px 0px;
-    font-size: 24px;
-    text-align: center
+    margin: 50px 0px 0px 0px;
+    margin-left:auto;
+    margin-right:auto;
+    width:70%;
 }
 .show__vote__output__item {
-    margin: 30px 0px 10px 10px;
+    margin: 20px 0px 0px 0px;
+    font-size: 28px;
 }
 .case__answer__button {
     margin: 100px 0px 0px 0px;

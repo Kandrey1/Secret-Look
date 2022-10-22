@@ -40,6 +40,7 @@ class AllVoteClient(Resource):
                         date_end=datas["date_start"],
                         client_id=client.id)
             Database.save(vote)
+            vote.create_vote_url()
 
             for ans in datas["answers"]:
                 answer = VoteAnswer(answer=ans, vote_id=vote.id)
