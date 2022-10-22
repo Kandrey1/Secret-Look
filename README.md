@@ -37,12 +37,28 @@ Web приложение "SecretLook" предназначено для пров
 (У Вас должны быть установлены Redis (localhost:6379) и Postgres(localhost:5432), 
 если они на других портах необходимо будет указать их в конфигурациях)
 
-В файле .env параметр POSTGRES_HOSTNAME=localhost
+Установить в файле .env параметры: 
+ - POSTGRES_HOSTNAME=localhost
+ - REDIS_HOST=localhost
 
 Находясь в корне проекта выполнить: 
  - worker `celery -A celeryd worker --loglevel=INFO --concurrency 4 -P eventlet  --purge`
  - beat `celery -A celeryd beat --loglevel=INFO`
  - flower (необязательно) `celery -A celeryd flower --loglevel=info`
+
+#### Используя Docker
+
+Установить в файле .env параметры: 
+ - POSTGRES_HOSTNAME=postgres
+ - REDIS_HOST=redis
+
+ - Находясь в корне проекта выполнить: 
+
+`docker-compose up --build -d`
+
+При первом запуске потребуется время создание БД.(в это время приложение может выдавать ошибку)
+
+Автоматически устанавливается pgAdmin по адресу `http://localhost:5050/browser/` 
 
 
 ## Тестирование

@@ -30,6 +30,9 @@ class ConfigDevelopment(object):
     CACHE_TYPE = "SimpleCache"
     CACHE_DEFAULT_TIMEOUT = 300
 
+    REDIS_HOST = os.environ.get('REDIS_HOST')
+    REDIS_PORT = os.environ.get('REDIS_PORT')
+
 
 class ConfigTest(object):
     DEBUG = True

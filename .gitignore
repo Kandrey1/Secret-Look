@@ -3,6 +3,7 @@ celerybeat-schedule.bak
 celerybeat-schedule.dat
 celerybeat-schedule.dir
 create_start_datas.py
+pgadmin/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

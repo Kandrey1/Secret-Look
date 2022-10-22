@@ -1,5 +1,12 @@
-broker_url = 'redis://localhost:6379/0'
-result_backend = 'redis://localhost:6379/0'
+from config import ConfigDevelopment
+
+
+broker_url = "redis://{broker_host}:{broker_port}/0".format(
+        broker_host=ConfigDevelopment.REDIS_HOST,
+        broker_port=ConfigDevelopment.REDIS_PORT)
+result_backend = "redis://{broker_host}:{broker_port}/0".format(
+        broker_host=ConfigDevelopment.REDIS_HOST,
+        broker_port=ConfigDevelopment.REDIS_PORT)
 task_serializer = 'json'
 result_serializer = 'json'
 accept_content = ['json']
