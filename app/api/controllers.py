@@ -47,9 +47,9 @@ class AllVoteClient(Resource):
                 Database.save(answer)
 
         except Exception as e:
-            return {'Error': f'{e}'}
+            return {'Error': f'{e}'}, 400
 
-        return jsonify({f'{datas["title"]}': 'Add'})
+        return {'Vote': 'Add'}, 201
 
     def get(self):
         """Возвращает список всех опросов клиента."""
@@ -62,9 +62,9 @@ class AllVoteClient(Resource):
                 votes.append(VoteSchema().dump(v))
 
         except Exception as e:
-            return {'Error': f'{e}'}
+            return {'Error': f'{e}'}, 400
 
-        return jsonify({'Опросы': votes})
+        return votes, 200
 
 
 class VoteClient(Resource):
@@ -96,16 +96,9 @@ class VoteClient(Resource):
         return jsonify(votes)
 
     def delete(self, vote_id: int):
-        """Удаляет опрос, если он в статусе 'waiting'(не запущен).
-            Дополнительно надо передать в json {"mode": "delete"}
-        """
+        """Удаляет опрос, если он в статусе 'waiting'(не запущен)."""
         try:
             client = AccessClient().check(headers=request.headers)
-
-            datas = request.get_json()
-
-            if not datas['mode'] == 'delete':
-                raise Exception('Неверный запрос удаления')
 
             if not check_access_vote(client_id=client.id, vote_id=vote_id):
                 raise Exception('Запрошенный опрос не существует')
@@ -113,6 +106,6 @@ class VoteClient(Resource):
             Database.dell(table=Vote, delete_id=vote_id)
 
         except Exception as e:
-            return {'Error': f'{e}'}
+            return {'Error': f'{e}'}, 400
 
-        return jsonify()
+        return {'Vote': 'Delete'}, 204

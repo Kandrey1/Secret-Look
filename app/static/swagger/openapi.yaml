@@ -1,0 +1,283 @@
+openapi: 3.0.0
+info:
+  title: API Secreet Look
+  description: Для взаимодействия с API необходимо получить токен в личном кабинете.
+  version: 1.0.0
+paths:
+  /api/vote/:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Возвращает список опросов.
+      description: Возвращает список опросов с данными.
+      responses:
+        '200':
+          description: Возвращает JSON
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    client_finished:
+                      type: boolean
+                    date_end:
+                      type: string
+                      example: 2022-12-15T09:45
+                    date_start:
+                      type: string
+                      example: 2022-11-25T18:05
+                    id:
+                      type: integer
+                      minimum: 1
+                    question:
+                      type: string
+                      example: Какая музыка Вам нравится
+                    status:
+                      type: string
+                      example: waiting
+                    title:
+                      type: string
+                      example: Музыкальные предпочтения
+                    vote_url:
+                      type: string
+                      example: egbsas
+        '400':
+          description: Неверный запрос.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Неверный запрос."
+
+        '401':
+          description: Отсутствует или неверный токен.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Отсутствует или неверный токен."
+        '5XX':
+          description: Непредвиденная ошибка.
+
+    post:
+      security:
+        - bearerAuth: []
+      summary: Добавляет новый опрос.
+      description: Добавляет новый опрос с вариантами ответов.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Заголовок 1"
+                question:
+                  type: string
+                  example: "Вопрос 1"
+                date_start:
+                  type: string
+                  example: '2022-10-15T09:45'
+                date_end:
+                  type: string
+                  example: '2022-12-15T09:45'
+                answers:
+                  type: array
+                  items:
+                    type: string
+                    example: "Вариант ответа 1"
+              required:
+                - title
+                - question
+                - date_start
+                - date_end
+                - answers
+      responses:
+        '201':
+          description: Опрос добавлен успешно.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Vote:
+                    type: string
+                    example: "Add"
+        '400':
+          description: Неверный запрос.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Неверный запрос."
+
+        '401':
+          description: Отсутствует или неверный токен.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Отсутствует или неверный токен."
+        '5XX':
+          description: Непредвиденная ошибка.
+
+  /api/vote/{voteId}:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Возвращает подробную информация по опросу.
+      description: Возвращает подробную информация по конкретному(voteId) опросу + ответ и кол-во проголосовавших.
+      parameters:
+        - name: voteId
+          in: path
+          required: true
+          description: Id опроса в БД.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Возвращает JSON
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    answers:
+                      type: object
+                      properties:
+                        answer 1:
+                          type: integer
+                          description: Количество проголосовавших
+                        answer 2:
+                          type: integer
+                          description: Количество проголосовавших
+                        ....:
+                          example: ...
+                        answer n:
+                          type: integer
+                          description: Количество проголосовавших
+
+
+                    client_finished:
+                      type: boolean
+                    date_end:
+                      type: string
+                      example: 2022-12-15T09:45
+                    date_start:
+                      type: string
+                      example: 2022-11-25T18:05
+                    id:
+                      type: integer
+                      minimum: 1
+                    question:
+                      type: string
+                      example: Какая музыка Вам нравится
+                    status:
+                      type: string
+                      example: waiting
+                    title:
+                      type: string
+                      example: Музыкальные предпочтения
+                    vote_url:
+                      type: string
+                      example: egbsas
+        '400':
+          description: Неверный запрос.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Неверный запрос."
+
+        '401':
+          description: Отсутствует или неверный токен.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Отсутствует или неверный токен."
+        '5XX':
+          description: Непредвиденная ошибка.
+
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Удаляет опрос.
+      description: Удаляет конкретный(voteId) опрос, если он в статусе 'waiting'(не запущен).
+      parameters:
+        - name: voteId
+          in: path
+          required: true
+          description: Id опроса в БД.
+          schema:
+            type : integer
+            format: int64
+            minimum: 1
+      responses:
+        '204':
+          description: Опрос был удален.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Vote:
+                    type: string
+                    example: "Delete"
+
+        '400':
+          description: Неверный запрос.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Неверный запрос."
+
+        '401':
+          description: Отсутствует или неверный токен.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: string
+                    example: "Отсутствует или неверный токен."
+        '5XX':
+          description: Непредвиденная ошибка.
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

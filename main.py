@@ -1,7 +1,7 @@
 from flask import render_template
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.exceptions import NoAuthorizationError
-
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from app import create_app
 from app.api.blueprint import api_bp
@@ -24,6 +24,17 @@ def create_table():
     db.create_all()
 
 
+SWAGGER_URL = '/docs/api'
+API_URL = '/static/swagger/openapi.yaml'
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': 'API Secret Look'
+    }
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 app.register_blueprint(api_bp, url_prefix='/api')
 app.register_blueprint(client_bp, url_prefix='/client')
 app.register_blueprint(profile_bp, url_prefix='/client/profile')

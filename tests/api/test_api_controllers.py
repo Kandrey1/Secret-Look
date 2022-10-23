@@ -37,8 +37,8 @@ def test_api_controllers_all_vote_client_post(app_test, client_test,
 
     response = client_test.post("/api/vote/", json=data, headers=headers)
 
-    assert response.status_code == 200
-    assert response.get_json() == {"title": "Add"}
+    assert response.status_code == 201
+    assert response.get_json() == {"Vote": "Add"}
 
     assert Vote.query.count() == 3
     assert VoteAnswer.query.count() == 4
@@ -72,11 +72,11 @@ def test_api_controllers_all_vote_client_get(app_test, client_test,
         response = client_test.get("/api/vote/", headers=headers)
 
         assert response.status_code == 200
-        assert len(response.get_json()['Опросы']) == 2
-        assert response.get_json()['Опросы'][0]['id'] == 1
-        assert response.get_json()['Опросы'][0]['title'] == 'title1'
-        assert response.get_json()['Опросы'][1]['id'] == 2
-        assert response.get_json()['Опросы'][1]['title'] == 'title3'
+        assert len(response.get_json()) == 2
+        assert response.get_json()[0]['id'] == 1
+        assert response.get_json()[0]['title'] == 'title1'
+        assert response.get_json()[1]['id'] == 2
+        assert response.get_json()[1]['title'] == 'title3'
 
 
 def test_api_controllers_vote_client_get(app_test, client_test,
@@ -141,7 +141,7 @@ def test_api_controllers_vote_client_delete(app_test, client_test,
 
     response = client_test.delete("/api/vote/1", json=data, headers=headers)
 
-    assert response.status_code == 200
+    assert response.status_code == 204
     assert Vote.query.count() == 1
     assert Vote.query.first().title == "title3"
 
